@@ -1,0 +1,38 @@
+# dependencies
+node_modules
+.pnp
+.pnp.js
+
+# Next.js build output & caches
+.next
+out
+build
+*.tsbuildinfo
+.turbo
+.cache
+.eslintcache
+
+# environment variables: never commit secrets
+.env*
+!.env.example
+
+# deployment
+.vercel
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# testing
+coverage
+
+# OS / editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/extensions.json
+.idea
+*.swp
