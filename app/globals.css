@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* shadcn tokens mapped to the Ivory palette */
+    --background: 31 69% 95%;       /* #FBF3EA */
+    --foreground: 22 56% 27%;       /* #6B3A1E */
+    --card: 33 56% 90%;             /* #F3E6D6 */
+    --card-foreground: 22 56% 27%;
+    --popover: 31 69% 97%;
+    --popover-foreground: 22 56% 27%;
+    --primary: 81 21% 41%;          /* #6E7F52 sage */
+    --primary-foreground: 31 69% 96%;
+    --secondary: 34 61% 77%;        /* #E8C9A1 beige */
+    --secondary-foreground: 22 56% 27%;
+    --muted: 33 45% 88%;
+    --muted-foreground: 22 36% 30%;  /* #6A4632 */
+    --accent: 33 56% 90%;
+    --accent-foreground: 22 56% 27%;
+    --destructive: 4 60% 45%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 32 40% 82%;
+    --input: 32 40% 80%;
+    --ring: 81 21% 41%;
+    --radius: 1.25rem;
+  }
+
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; -webkit-tap-highlight-color: transparent; }
+  body {
+    @apply bg-ivory font-sans text-[17px] leading-[1.7] text-ink antialiased;
+    background-image: var(--linen);
+  }
+  h1, h2, h3, h4 { @apply font-serif font-medium text-brown; }
+  ::selection { background: #e8c9a1; color: #6b3a1e; }
+  :focus-visible { outline: 2px solid #6e7f52; outline-offset: 3px; border-radius: 6px; }
+}
+
+:root {
+  /* very soft paper/linen grain, generated with SVG turbulence (no network) */
+  --linen: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.42 0 0 0 0 0.23 0 0 0 0 0.12 0 0 0 .035 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@layer components {
+  .label {
+    @apply font-sans text-[13px] font-medium uppercase leading-normal tracking-[0.18em] text-label;
+  }
+  .heading-xl { @apply font-serif text-4xl leading-[1.1] sm:text-5xl lg:text-6xl; }
+  .heading-lg { @apply font-serif text-3xl leading-tight sm:text-4xl; }
+  .card-soft {
+    @apply rounded-3xl bg-cream/70 shadow-soft ring-1 ring-brown/5 backdrop-blur-[1px];
+  }
+  .hover-lift { @apply transition duration-500 ease-out hover:-translate-y-1 hover:shadow-lift; }
+  .paper { background-color: #f3e6d6; background-image: var(--linen); }
+}
+
+@layer utilities {
+  .text-balance { text-wrap: balance; }
+  .scrollbar-none { scrollbar-width: none; }
+  .scrollbar-none::-webkit-scrollbar { display: none; }
+}
+
+/* ── Scroll reveal ───────────────────────────────────────────
+   Content is NEVER hidden: no opacity change, only a soft 16px rise over the
+   first ~220px of scrolling into view. Screenshot tools, in-app browsers and
+   anything that renders the page without scrolling always see every section.
+   Without scroll-driven animation support, or with reduced motion, there is no
+   motion at all. */
+@keyframes reveal-up {
+  from { translate: 0 16px; }
+  to   { translate: none; }
+}
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal,
+    .reveal-stagger > * {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry var(--reveal-offset, 0px) entry calc(220px + var(--reveal-offset, 0px));
+    }
+    .reveal-stagger > :nth-child(2) { --reveal-offset: 30px; }
+    .reveal-stagger > :nth-child(3) { --reveal-offset: 60px; }
+    .reveal-stagger > :nth-child(4) { --reveal-offset: 90px; }
+    .reveal-stagger > :nth-child(5) { --reveal-offset: 120px; }
+    .reveal-stagger > :nth-child(n + 6) { --reveal-offset: 150px; }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+}
